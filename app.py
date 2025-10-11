@@ -12,67 +12,67 @@ def app_penjumlahan():
     garis()
     st.markdown("<h4 style='text-align:center;'>OPERASI PENJUMLAHAN</h4>", unsafe_allow_html=True)
     garis()
-    angka1 = st.number_input("Masukkan angka pertama", key="penjumlahan1")
-    angka2 = st.number_input("Masukkan angka kedua", key="penjumlahan2")
+    angka1 = st.number_input("Masukkan angka pertama", key="penjumlahan1", step=1, format="%d")
+    angka2 = st.number_input("Masukkan angka kedua", key="penjumlahan2", step=1, format="%d")
     if st.button("Hitung Penjumlahan"):
-        hasil = angka1 + angka2
-        st.success(f"Hasil dari {angka1} ditambah {angka2} adalah {hasil}")
+        hasil = int(angka1) + int(angka2)
+        st.success(f"Hasil dari {int(angka1)} ditambah {int(angka2)} adalah {hasil}")
 
 def app_pengurangan():
     garis()
     st.markdown("<h4 style='text-align:center;'>OPERASI PENGURANGAN</h4>", unsafe_allow_html=True)
     garis()
-    angka1 = st.number_input("Masukkan angka pertama", key="pengurangan1")
-    angka2 = st.number_input("Masukkan angka kedua", key="pengurangan2")
+    angka1 = st.number_input("Masukkan angka pertama", key="pengurangan1", step=1, format="%d")
+    angka2 = st.number_input("Masukkan angka kedua", key="pengurangan2", step=1, format="%d")
     if st.button("Hitung Pengurangan"):
-        hasil = angka1 - angka2
-        st.success(f"Hasil dari {angka1} dikurangi {angka2} adalah {hasil}")
+        hasil = int(angka1) - int(angka2)
+        st.success(f"Hasil dari {int(angka1)} dikurangi {int(angka2)} adalah {hasil}")
 
 def app_perkalian():
     garis()
     st.markdown("<h4 style='text-align:center;'>OPERASI PERKALIAN</h4>", unsafe_allow_html=True)
     garis()
-    angka1 = st.number_input("Masukkan angka pertama", key="perkalian1")
-    angka2 = st.number_input("Masukkan angka kedua", key="perkalian2")
+    angka1 = st.number_input("Masukkan angka pertama", key="perkalian1", step=1, format="%d")
+    angka2 = st.number_input("Masukkan angka kedua", key="perkalian2", step=1, format="%d")
     if st.button("Hitung Perkalian"):
-        hasil = angka1 * angka2
-        st.success(f"Hasil dari {angka1} dikali {angka2} adalah {hasil}")
+        hasil = int(angka1) * int(angka2)
+        st.success(f"Hasil dari {int(angka1)} dikali {int(angka2)} adalah {hasil}")
 
 def app_pembagian():
     garis()
     st.markdown("<h4 style='text-align:center;'>OPERASI PEMBAGIAN</h4>", unsafe_allow_html=True)
     garis()
-    angka1 = st.number_input("Masukkan angka pertama", key="pembagian1")
-    angka2 = st.number_input("Masukkan angka kedua", key="pembagian2")
+    angka1 = st.number_input("Masukkan angka pertama", key="pembagian1", step=1, format="%d")
+    angka2 = st.number_input("Masukkan angka kedua", key="pembagian2", step=1, format="%d")
     if st.button("Hitung Pembagian"):
         if angka2 == 0:
             st.error("Tidak bisa membagi dengan nol.")
         else:
-            hasil = angka1 / angka2
-            st.success(f"Hasil dari {angka1} dibagi {angka2} adalah {hasil}")
+            hasil = int(angka1) / int(angka2)
+            st.success(f"Hasil dari {int(angka1)} dibagi {int(angka2)} adalah {hasil}")
 
 def app_pangkat():
     garis()
     st.markdown("<h4 style='text-align:center;'>OPERASI PANGKAT</h4>", unsafe_allow_html=True)
     garis()
-    angka1 = st.number_input("Masukkan angka", key="pangkat1")
-    angka2 = st.number_input("Masukkan pangkat", key="pangkat2")
+    angka1 = st.number_input("Masukkan angka", key="pangkat1", step=1, format="%d")
+    angka2 = st.number_input("Masukkan pangkat", key="pangkat2", step=1, format="%d")
     if st.button("Hitung Pangkat"):
-        hasil = angka1 ** angka2
-        st.success(f"Hasil dari {angka1} pangkat {angka2} adalah {hasil}")
+        hasil = int(angka1) ** int(angka2)
+        st.success(f"Hasil dari {int(angka1)} pangkat {int(angka2)} adalah {hasil}")
 
 def app_persentase():
     garis()
     st.markdown("<h4 style='text-align:center;'>OPERASI PERSENTASE</h4>", unsafe_allow_html=True)
     garis()
-    bagian = st.number_input("Masukkan nilai (bagian)", key="persentase1")
-    total = st.number_input("Masukkan total", key="persentase2")
+    bagian = st.number_input("Masukkan nilai (bagian)", key="persentase1", step=1, format="%d")
+    total = st.number_input("Masukkan total", key="persentase2", step=1, format="%d")
     if st.button("Hitung Persentase"):
         if total == 0:
             st.error("Total nilai tidak boleh nol.")
         else:
-            hasil = (bagian / total) * 100
-            st.success(f"{bagian} dari {total} adalah {hasil}%")
+            hasil = (int(bagian) / int(total)) * 100
+            st.success(f"{int(bagian)} dari {int(total)} adalah {hasil}%")
 
 def app_menu():
     st.markdown("<h2 style='text-align:center;'>KALKULATOR SEDERHANA DELON</h2>", unsafe_allow_html=True)
