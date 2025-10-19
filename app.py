@@ -1,122 +1,138 @@
 import streamlit as st
+import math
 
-def garis():
-    st.markdown("<hr style='border:1px solid #bbb;'>", unsafe_allow_html=True)
+# Inisialisasi session state
+if 'expression' not in st.session_state:
+    st.session_state.expression = ""
+if 'history' not in st.session_state:
+    st.session_state.history = []
 
-def keluar():
-    garis()
-    st.success("Terima kasih sudah menggunakan kalkulator sederhana ini.\nSampai jumpa lagi!")
-    st.stop()
+def update_expression(char):
+    if char in ['+', '-', '*', '/', '^', '%']:
+        if st.session_state.expression and not st.session_state.expression[-1] in ['+', '-', '*', '/', '^', '%']:
+            st.session_state.expression += char
+    elif char == '←':
+        st.session_state.expression = st.session_state.expression[:-1]
+    elif char == 'C':
+        st.session_state.expression = ""
+    elif char == '=':
+        calculate()
+    elif char == '√':
+        calculate_sqrt()
+    elif char in ['sin', 'cos', 'tan', 'log']:
+        calculate_trig_log(char)
+    else:
+        st.session_state.expression += char
 
-def app_penjumlahan():
-    garis()
-    st.markdown("<h4 style='text-align:center;'>OPERASI PENJUMLAHAN</h4>", unsafe_allow_html=True)
-    garis()
-    angka1 = st.number_input("Masukkan angka pertama", key="penjumlahan1", step=1, format="%d")
-    angka2 = st.number_input("Masukkan angka kedua", key="penjumlahan2", step=1, format="%d")
-    if st.button("Hitung Penjumlahan"):
-        hasil = int(angka1) + int(angka2)
-        st.success(f"Hasil dari {int(angka1)} ditambah {int(angka2)} adalah {hasil}")
+def calculate():
+    try:
+        if st.session_state.expression and '=' not in st.session_state.expression:
+            # Parse ekspresi sederhana (misal: 5+3)
+            parts = st.session_state.expression.replace('+', ' + ').replace('-', ' - ').replace('*', ' * ').replace('/', ' / ').replace('^', ' ** ').replace('%', ' % ').split()
+            if len(parts) == 3:
+                a, op, b = float(parts[0]), parts[1], float(parts[2])
+                if op == '+':
+                    result = a + b
+                elif op == '-':
+                    result = a - b
+                elif op == '*':
+                    result = a * b
+                elif op == '/':
+                    if b == 0:
+                        raise ZeroDivisionError
+                    result = a / b
+                elif op == '**':
+                    result = a ** b
+                elif op == '%':
+                    result = (a / b) * 100
+                op_str = f"{st.session_state.expression} = {result}"
+                st.session_state.history.append(op_str)
+                st.session_state.expression = str(result)
+            else:
+                st.error("Ekspresi tidak valid.")
+    except ZeroDivisionError:
+        st.error("Tidak bisa membagi dengan nol.")
+    except Exception as e:
+        st.error(f"Error: {str(e)}")
 
-def app_pengurangan():
-    garis()
-    st.markdown("<h4 style='text-align:center;'>OPERASI PENGURANGAN</h4>", unsafe_allow_html=True)
-    garis()
-    angka1 = st.number_input("Masukkan angka pertama", key="pengurangan1", step=1, format="%d")
-    angka2 = st.number_input("Masukkan angka kedua", key="pengurangan2", step=1, format="%d")
-    if st.button("Hitung Pengurangan"):
-        hasil = int(angka1) - int(angka2)
-        st.success(f"Hasil dari {int(angka1)} dikurangi {int(angka2)} adalah {hasil}")
+def calculate_sqrt():
+    try:
+        num = float(st.session_state.expression)
+        if num < 0:
+            raise ValueError("Akar kuadrat dari angka negatif tidak valid.")
+        result = math.sqrt(num)
+        op_str = f"√{st.session_state.expression} = {result}"
+        st.session_state.history.append(op_str)
+        st.session_state.expression = str(result)
+    except ValueError as e:
+        st.error(str(e))
 
-def app_perkalian():
-    garis()
-    st.markdown("<h4 style='text-align:center;'>OPERASI PERKALIAN</h4>", unsafe_allow_html=True)
-    garis()
-    angka1 = st.number_input("Masukkan angka pertama", key="perkalian1", step=1, format="%d")
-    angka2 = st.number_input("Masukkan angka kedua", key="perkalian2", step=1, format="%d")
-    if st.button("Hitung Perkalian"):
-        hasil = int(angka1) * int(angka2)
-        st.success(f"Hasil dari {int(angka1)} dikali {int(angka2)} adalah {hasil}")
+def calculate_trig_log(func):
+    try:
+        num = float(st.session_state.expression)
+        if func == 'sin':
+            result = math.sin(math.radians(num))
+            op_str = f"sin({st.session_state.expression}°) = {result}"
+        elif func == 'cos':
+            result = math.cos(math.radians(num))
+            op_str = f"cos({st.session_state.expression}°) = {result}"
+        elif func == 'tan':
+            result = math.tan(math.radians(num))
+            op_str = f"tan({st.session_state.expression}°) = {result}"
+        elif func == 'log':
+            if num <= 0:
+                raise ValueError("Logaritma hanya untuk angka > 0.")
+            result = math.log10(num)
+            op_str = f"log10({st.session_state.expression}) = {result}"
+        st.session_state.history.append(op_str)
+        st.session_state.expression = str(result)
+    except ValueError as e:
+        st.error(str(e))
 
-def app_pembagian():
-    garis()
-    st.markdown("<h4 style='text-align:center;'>OPERASI PEMBAGIAN</h4>", unsafe_allow_html=True)
-    garis()
-    angka1 = st.number_input("Masukkan angka pertama", key="pembagian1", step=1, format="%d")
-    angka2 = st.number_input("Masukkan angka kedua", key="pembagian2", step=1, format="%d")
-    if st.button("Hitung Pembagian"):
-        if angka2 == 0:
-            st.error("Tidak bisa membagi dengan nol.")
-        else:
-            hasil = int(angka1) / int(angka2)
-            st.success(f"Hasil dari {int(angka1)} dibagi {int(angka2)} adalah {hasil}")
+# UI Streamlit
+st.title("Kalkulator Mobile Web")
 
-def app_pangkat():
-    garis()
-    st.markdown("<h4 style='text-align:center;'>OPERASI PANGKAT</h4>", unsafe_allow_html=True)
-    garis()
-    angka1 = st.number_input("Masukkan angka", key="pangkat1", step=1, format="%d")
-    angka2 = st.number_input("Masukkan pangkat", key="pangkat2", step=1, format="%d")
-    if st.button("Hitung Pangkat"):
-        hasil = int(angka1) ** int(angka2)
-        st.success(f"Hasil dari {int(angka1)} pangkat {int(angka2)} adalah {hasil}")
+# Display
+st.text_input("Display", value=st.session_state.expression, key="display", disabled=True)
 
-def app_persentase():
-    garis()
-    st.markdown("<h4 style='text-align:center;'>OPERASI PERSENTASE</h4>", unsafe_allow_html=True)
-    garis()
-    bagian = st.number_input("Masukkan nilai (bagian)", key="persentase1", step=1, format="%d")
-    total = st.number_input("Masukkan total", key="persentase2", step=1, format="%d")
-    if st.button("Hitung Persentase"):
-        if total == 0:
-            st.error("Total nilai tidak boleh nol.")
-        else:
-            hasil = (int(bagian) / int(total)) * 100
-            st.success(f"{int(bagian)} dari {int(total)} adalah {hasil}%")
+# Tombol-tombol dalam grid
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    if st.button("7"): update_expression("7")
+    if st.button("4"): update_expression("4")
+    if st.button("1"): update_expression("1")
+    if st.button("0"): update_expression("0")
+    if st.button("C"): update_expression("C")
+    if st.button("sin"): update_expression("sin")
 
-def app_menu():
-    st.markdown("<h2 style='text-align:center;'>KALKULATOR SEDERHANA DELON</h2>", unsafe_allow_html=True)
-    garis()
-    st.markdown("""
-    <div style='text-align:center;'>
-    <b>Pilih operasi:</b><br>
-    <span style='display:inline-block;width:45%;text-align:left;'>+  : Penjumlahan</span>
-    <span style='display:inline-block;width:45%;text-align:right;'>x  : Perkalian</span><br>
-    <span style='display:inline-block;width:45%;text-align:left;'>-  : Pengurangan</span>
-    <span style='display:inline-block;width:45%;text-align:right;'>/  : Pembagian</span><br>
-    <span style='display:inline-block;width:45%;text-align:left;'>** : Pangkat</span>
-    <span style='display:inline-block;width:45%;text-align:right;'>%  : Persentase</span><br>
-    <span style='display:inline-block;width:100%;text-align:center;'>#  : Keluar</span>
-    </div>
-    """, unsafe_allow_html=True)
-    garis()
-    operasi = st.selectbox(
-        "Masukkan pilihan:",
-        ("+", "-", "x", "/", "**", "%", "#"),
-        format_func=lambda x: {
-            "+": "Penjumlahan (+)",
-            "-": "Pengurangan (-)",
-            "x": "Perkalian (x)",
-            "/": "Pembagian (/)",
-            "**": "Pangkat (**)",
-            "%": "Persentase (%)",
-            "#": "Keluar"
-        }[x]
-    )
+with col2:
+    if st.button("8"): update_expression("8")
+    if st.button("5"): update_expression("5")
+    if st.button("2"): update_expression("2")
+    if st.button("."): update_expression(".")
+    if st.button("←"): update_expression("←")
+    if st.button("cos"): update_expression("cos")
 
-    if operasi == "+":
-        app_penjumlahan()
-    elif operasi == "-":
-        app_pengurangan()
-    elif operasi == "x":
-        app_perkalian()
-    elif operasi == "/":
-        app_pembagian()
-    elif operasi == "**":
-        app_pangkat()
-    elif operasi == "%":
-        app_persentase()
-    elif operasi == "#":
-        keluar()
+with col3:
+    if st.button("9"): update_expression("9")
+    if st.button("6"): update_expression("6")
+    if st.button("3"): update_expression("3")
+    if st.button("="): update_expression("=")
+    if st.button("√"): update_expression("√")
+    if st.button("tan"): update_expression("tan")
 
-app_menu()
+with col4:
+    if st.button("/"): update_expression("/")
+    if st.button("*"): update_expression("*")
+    if st.button("-"): update_expression("-")
+    if st.button("+"): update_expression("+")
+    if st.button("^"): update_expression("^")
+    if st.button("log"): update_expression("log")
+
+# Riwayat
+st.subheader("Riwayat Perhitungan")
+if st.session_state.history:
+    for item in st.session_state.history[-10:]:  # Tampilkan 10 terakhir
+        st.write(item)
+else:
+    st.write("Belum ada riwayat.")
