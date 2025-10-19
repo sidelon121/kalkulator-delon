@@ -1,122 +1,144 @@
 import streamlit as st
+import math
 
-def garis():
-    st.markdown("<hr style='border:1px solid #bbb;'>", unsafe_allow_html=True)
+# ========================
+# Fungsi Perhitungan
+# ========================
+def hitung_penjumlahan(a, b):
+    return a + b
 
-def keluar():
-    garis()
-    st.success("Terima kasih sudah menggunakan kalkulator sederhana ini.\nSampai jumpa lagi!")
-    st.stop()
+def hitung_pengurangan(a, b):
+    return a - b
 
-def app_penjumlahan():
-    garis()
-    st.markdown("<h4 style='text-align:center;'>OPERASI PENJUMLAHAN</h4>", unsafe_allow_html=True)
-    garis()
-    angka1 = st.number_input("Masukkan angka pertama", key="penjumlahan1", step=1, format="%d")
-    angka2 = st.number_input("Masukkan angka kedua", key="penjumlahan2", step=1, format="%d")
-    if st.button("Hitung Penjumlahan"):
-        hasil = int(angka1) + int(angka2)
-        st.success(f"Hasil dari {int(angka1)} ditambah {int(angka2)} adalah {hasil}")
+def hitung_perkalian(a, b):
+    return a * b
 
-def app_pengurangan():
-    garis()
-    st.markdown("<h4 style='text-align:center;'>OPERASI PENGURANGAN</h4>", unsafe_allow_html=True)
-    garis()
-    angka1 = st.number_input("Masukkan angka pertama", key="pengurangan1", step=1, format="%d")
-    angka2 = st.number_input("Masukkan angka kedua", key="pengurangan2", step=1, format="%d")
-    if st.button("Hitung Pengurangan"):
-        hasil = int(angka1) - int(angka2)
-        st.success(f"Hasil dari {int(angka1)} dikurangi {int(angka2)} adalah {hasil}")
+def hitung_pembagian(a, b):
+    if b == 0:
+        return "Tidak bisa membagi dengan nol."
+    return a / b
 
-def app_perkalian():
-    garis()
-    st.markdown("<h4 style='text-align:center;'>OPERASI PERKALIAN</h4>", unsafe_allow_html=True)
-    garis()
-    angka1 = st.number_input("Masukkan angka pertama", key="perkalian1", step=1, format="%d")
-    angka2 = st.number_input("Masukkan angka kedua", key="perkalian2", step=1, format="%d")
-    if st.button("Hitung Perkalian"):
-        hasil = int(angka1) * int(angka2)
-        st.success(f"Hasil dari {int(angka1)} dikali {int(angka2)} adalah {hasil}")
+def hitung_pangkat(a, b):
+    return a ** b
 
-def app_pembagian():
-    garis()
-    st.markdown("<h4 style='text-align:center;'>OPERASI PEMBAGIAN</h4>", unsafe_allow_html=True)
-    garis()
-    angka1 = st.number_input("Masukkan angka pertama", key="pembagian1", step=1, format="%d")
-    angka2 = st.number_input("Masukkan angka kedua", key="pembagian2", step=1, format="%d")
-    if st.button("Hitung Pembagian"):
-        if angka2 == 0:
-            st.error("Tidak bisa membagi dengan nol.")
-        else:
-            hasil = int(angka1) / int(angka2)
-            st.success(f"Hasil dari {int(angka1)} dibagi {int(angka2)} adalah {hasil}")
+def hitung_persentase(nilai, total):
+    if total == 0:
+        return "Total tidak boleh nol."
+    return (nilai / total) * 100
 
-def app_pangkat():
-    garis()
-    st.markdown("<h4 style='text-align:center;'>OPERASI PANGKAT</h4>", unsafe_allow_html=True)
-    garis()
-    angka1 = st.number_input("Masukkan angka", key="pangkat1", step=1, format="%d")
-    angka2 = st.number_input("Masukkan pangkat", key="pangkat2", step=1, format="%d")
-    if st.button("Hitung Pangkat"):
-        hasil = int(angka1) ** int(angka2)
-        st.success(f"Hasil dari {int(angka1)} pangkat {int(angka2)} adalah {hasil}")
+def hitung_akar_kuadrat(a):
+    if a < 0:
+        return "Tidak bisa menghitung akar kuadrat dari angka negatif."
+    return math.sqrt(a)
 
-def app_persentase():
-    garis()
-    st.markdown("<h4 style='text-align:center;'>OPERASI PERSENTASE</h4>", unsafe_allow_html=True)
-    garis()
-    bagian = st.number_input("Masukkan nilai (bagian)", key="persentase1", step=1, format="%d")
-    total = st.number_input("Masukkan total", key="persentase2", step=1, format="%d")
-    if st.button("Hitung Persentase"):
-        if total == 0:
-            st.error("Total nilai tidak boleh nol.")
-        else:
-            hasil = (int(bagian) / int(total)) * 100
-            st.success(f"{int(bagian)} dari {int(total)} adalah {hasil}%")
+def hitung_akar_pangkat_n(a, n):
+    if n == 0:
+        return "Nilai pangkat akar tidak boleh nol."
+    if a < 0 and n % 2 == 0:
+        return "Tidak bisa menghitung akar genap dari angka negatif."
+    return a ** (1 / n)
 
-def app_menu():
-    st.markdown("<h2 style='text-align:center;'>KALKULATOR SEDERHANA DELON</h2>", unsafe_allow_html=True)
-    garis()
-    st.markdown("""
-    <div style='text-align:center;'>
-    <b>Pilih operasi:</b><br>
-    <span style='display:inline-block;width:45%;text-align:left;'>+  : Penjumlahan</span>
-    <span style='display:inline-block;width:45%;text-align:right;'>x  : Perkalian</span><br>
-    <span style='display:inline-block;width:45%;text-align:left;'>-  : Pengurangan</span>
-    <span style='display:inline-block;width:45%;text-align:right;'>/  : Pembagian</span><br>
-    <span style='display:inline-block;width:45%;text-align:left;'>** : Pangkat</span>
-    <span style='display:inline-block;width:45%;text-align:right;'>%  : Persentase</span><br>
-    <span style='display:inline-block;width:100%;text-align:center;'>#  : Keluar</span>
-    </div>
-    """, unsafe_allow_html=True)
-    garis()
-    operasi = st.selectbox(
-        "Masukkan pilihan:",
-        ("+", "-", "x", "/", "**", "%", "#"),
-        format_func=lambda x: {
-            "+": "Penjumlahan (+)",
-            "-": "Pengurangan (-)",
-            "x": "Perkalian (x)",
-            "/": "Pembagian (/)",
-            "**": "Pangkat (**)",
-            "%": "Persentase (%)",
-            "#": "Keluar"
-        }[x]
-    )
+def hitung_modulus(a, b):
+    if b == 0:
+        return "Tidak bisa melakukan modulus dengan nol."
+    return a % b
 
-    if operasi == "+":
-        app_penjumlahan()
-    elif operasi == "-":
-        app_pengurangan()
-    elif operasi == "x":
-        app_perkalian()
-    elif operasi == "/":
-        app_pembagian()
-    elif operasi == "**":
-        app_pangkat()
-    elif operasi == "%":
-        app_persentase()
-    elif operasi == "#":
-        keluar()
+def hitung_logaritma(a):
+    if a <= 0:
+        return "Logaritma hanya bisa untuk angka > 0."
+    return math.log10(a)
 
-app_menu()
+def hitung_trigonometri(fungsi, sudut):
+    rad = math.radians(sudut)
+    if fungsi == "sin":
+        return math.sin(rad)
+    elif fungsi == "cos":
+        return math.cos(rad)
+    elif fungsi == "tan":
+        return math.tan(rad)
+
+# ========================
+# Aplikasi Streamlit
+# ========================
+st.title("Kalkulator Lengkap")
+st.write("Pilih operasi matematika di bawah ini dan masukkan angka yang diperlukan.")
+
+# Pilih operasi
+operasi = st.selectbox(
+    "Pilih operasi:",
+    [
+        "Penjumlahan",
+        "Pengurangan",
+        "Perkalian",
+        "Pembagian",
+        "Pangkat",
+        "Persentase",
+        "Akar Kuadrat",
+        "Akar Pangkat-n",
+        "Modulus (Sisa Bagi)",
+        "Logaritma (Basis 10)",
+        "Trigonometri (sin, cos, tan)"
+    ]
+)
+
+hasil = None
+
+# Input berdasarkan operasi
+if operasi in ["Penjumlahan", "Pengurangan", "Perkalian", "Pembagian", "Modulus (Sisa Bagi)"]:
+    a = st.number_input("Masukkan angka pertama:", value=0.0, step=0.01)
+    b = st.number_input("Masukkan angka kedua:", value=0.0, step=0.01)
+    if st.button("Hitung"):
+        if operasi == "Penjumlahan":
+            hasil = hitung_penjumlahan(a, b)
+        elif operasi == "Pengurangan":
+            hasil = hitung_pengurangan(a, b)
+        elif operasi == "Perkalian":
+            hasil = hitung_perkalian(a, b)
+        elif operasi == "Pembagian":
+            hasil = hitung_pembagian(a, b)
+        elif operasi == "Modulus (Sisa Bagi)":
+            hasil = hitung_modulus(a, b)
+
+elif operasi == "Pangkat":
+    a = st.number_input("Masukkan angka (basis):", value=0.0, step=0.01)
+    b = st.number_input("Masukkan pangkat:", value=0.0, step=0.01)
+    if st.button("Hitung"):
+        hasil = hitung_pangkat(a, b)
+
+elif operasi == "Persentase":
+    nilai = st.number_input("Masukkan nilai:", value=0.0, step=0.01)
+    total = st.number_input("Masukkan total:", value=0.0, step=0.01)
+    if st.button("Hitung"):
+        hasil = hitung_persentase(nilai, total)
+
+elif operasi == "Akar Kuadrat":
+    a = st.number_input("Masukkan angka:", value=0.0, step=0.01)
+    if st.button("Hitung"):
+        hasil = hitung_akar_kuadrat(a)
+
+elif operasi == "Akar Pangkat-n":
+    a = st.number_input("Masukkan angka:", value=0.0, step=0.01)
+    n = st.number_input("Masukkan nilai pangkat akar (contoh: 3 untuk akar kubik):", value=1.0, step=0.01)
+    if st.button("Hitung"):
+        hasil = hitung_akar_pangkat_n(a, n)
+
+elif operasi == "Logaritma (Basis 10)":
+    a = st.number_input("Masukkan angka:", value=1.0, step=0.01)
+    if st.button("Hitung"):
+        hasil = hitung_logaritma(a)
+
+elif operasi == "Trigonometri (sin, cos, tan)":
+    fungsi = st.selectbox("Pilih fungsi:", ["sin", "cos", "tan"])
+    sudut = st.number_input("Masukkan sudut dalam derajat:", value=0.0, step=0.01)
+    if st.button("Hitung"):
+        hasil = hitung_trigonometri(fungsi, sudut)
+
+# Tampilkan hasil
+if hasil is not None:
+    if isinstance(hasil, str):
+        st.error(hasil)
+    else:
+        st.success(f"Hasil: {hasil:.4f}" if isinstance(hasil, float) else f"Hasil: {hasil}")
+
+st.write("---")
+st.write("Terima kasih sudah menggunakan kalkulator ini!")
