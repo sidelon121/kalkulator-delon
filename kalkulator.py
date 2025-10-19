@@ -120,4 +120,3 @@ def app_menu():
         keluar()
 
 app_menu()
-
